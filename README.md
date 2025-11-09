@@ -1,1 +1,1 @@
-Hecho por Sebastian y Camilo
+Hecho por Sebastian Restrepo y Camilo Vargas.
