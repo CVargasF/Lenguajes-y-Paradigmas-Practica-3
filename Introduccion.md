@@ -22,3 +22,9 @@ y_hat[] = mlr.predict(...); // El objeto predice
 for (yi in y_hat)  
 print("y_hat: " + yi); // Se imprimen los datos de la predicción  
 print("score: " + mlr.score(...));  // Se calculan y se imprimen el error de predicción.  
+## Uso del programa con bases de datos
+El programa debe correr y debe dar información sobre la predicción de las dos bases de datos siguientes. Una base de datos que tiene data sobre la venta de helados y el otro siendo los resultados de un examen para estudiantes.  
+### Data de venta de helados
+Entrenar el programa con la data de la venta de helados utilizando la regresion simple que se implemento.  
+### Student_exam_scores
+Entrenar el programa con la data de los resultados de el examen utilizando regresion multiple que se implemento.  
