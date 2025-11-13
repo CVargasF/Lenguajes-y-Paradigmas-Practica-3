@@ -17,7 +17,7 @@ public class LinearRegressionTest {
             2
         };
         
-        System.out.println("Linear Regression without Scaling");
+        System.out.println("Regression lineal minimizando la data");
         LinearRegression lr1 = new LinearRegression(true);
         lr1.fit(X_train, y_train, 5000, 0.01);
         
@@ -33,20 +33,6 @@ public class LinearRegressionTest {
         System.out.printf("MSE: %.2f%n", lr1.scoreMSE(X_test, y_test));
         System.out.printf("MAE: %.2f%n", lr1.scoreMAE(X_test, y_test));
         
-        System.out.println("\n=== Linear Regression with Scaling ===");
-        LinearRegression lr2 = new LinearRegression(true);
-        lr2.fit(X_train, y_train, 5000, 0.01);
-        
-        System.out.println("Weights: " + Arrays.toString(lr2.getWeights()));
-        System.out.println("Bias: " + lr2.getBias());
-        
-        double[] y_hat2 = lr2.predict(X_test);
-        for (int i = 0; i < y_hat2.length; i++) {
-            System.out.printf("Predicted: %.2f, Actual: %.2f%n", y_hat2[i], y_test[i]);
-        }
-        
-        System.out.printf("R² Score: %.4f%n", lr2.score(X_test, y_test));
-        System.out.printf("MSE: %.2f%n", lr2.scoreMSE(X_test, y_test));
-        System.out.printf("MAE: %.2f%n", lr2.scoreMAE(X_test, y_test));
+
     }
 }
