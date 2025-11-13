@@ -50,6 +50,21 @@ Primero:
 Dos:  
 La raiz del resultado anterior dividido por el largo de la dimension Y y las dimensiones x menos 1  
 
+### Fórmula Completa del Error (RMSE)
+La fórmula correcta para calcular el error de predicción es el Error Cuadrático Medio Raíz (RMSE):
+
+
+<img width="297" height="102" alt="image" src="https://github.com/user-attachments/assets/ba28cd32-8742-461c-99ee-7acbb5226b91" />
+
+## Donde:
+- yi = valor real observado
+- y^i = valor predicho por el modelo
+- n = número total de observaciones
+- Σ = sumatoria de todos los valores
+​
+
+
+
 
 
 
