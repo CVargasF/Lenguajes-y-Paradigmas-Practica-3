@@ -95,7 +95,7 @@ public class RegressionLinear {
     
     public double[] predict(double[][] X) {
         if (!isFitted) {
-            throw new IllegalStateException("Primero minimiza el modelo");input
+            throw new IllegalStateException("Primero minimiza el modelo");
         }
         
         if (X[0].length != pesos.length) {
