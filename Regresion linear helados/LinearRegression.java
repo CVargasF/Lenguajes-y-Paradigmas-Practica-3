@@ -50,7 +50,7 @@ public class LinearRegression {
         double[][] XScaled;
         double[] yScaled;
         
-        // Scale data if requested
+
         if (useScaling) {
             XScaled = scaleFeatures(X);
             yScaled = scaleTarget(y);
@@ -84,7 +84,7 @@ public class LinearRegression {
         }
         
         if (useScaling) {
-            adjustWeightsForScaling();
+            ajustarPesosParaEscala();
         }
         
         this.isFitted = true;
@@ -139,7 +139,7 @@ public class LinearRegression {
         }
         
         double[] predicciones = predict(X);
-        return calculateRSquared(y, predicciones);
+        return calcularRCuadrado(y, predicciones);
     }
     
     
@@ -216,26 +216,24 @@ public class LinearRegression {
     }
     
     /**
-     * Adjust pesos and bias after training with scaled data
+     * Ajusta pesos y bias despues de entrenar con la data escalada
      */
-    private void adjustWeightsForScaling() {
-        // Adjust bias
+    private void ajustarPesosParaEscala() {
+        // Ajustar bias
         double biasAdjustment = 0;
         for (int j = 0; j < pesos.length; j++) {
             biasAdjustment += pesos[j] * featureMeans[j] / featureStds[j];
         }
         bias = bias * targetStd + targetMean - biasAdjustment * targetStd;
         
-        // Adjust pesos
+        // Ajustar pesos
         for (int j = 0; j < pesos.length; j++) {
             pesos[j] = pesos[j] * targetStd / featureStds[j];
         }
     }
     
-    /**
-     * Utility methods for error calculations
-     */
-    private double calculateRSquared(double[] yTrue, double[] yPred) {
+
+    private double calcularRCuadrado(double[] yTrue, double[] yPred) {
         double ssResidual = 0;
         double ssTotal = 0;
         double yMean = 0;
