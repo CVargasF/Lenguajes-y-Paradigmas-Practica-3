@@ -26,7 +26,7 @@ public class RegressionLinearHelado {
         
         double[] y_hat1 = lr1.predict(X_test);
         for (int i = 0; i < y_hat1.length; i++) {
-            System.out.printf("Predicted: " + y_hat1[i] + ", Actual: " + y_test[i]);
+            System.out.printf("Predecido: " + y_hat1[i] + ", Actual: " + y_test[i]);
         }
         
         System.out.printf("Score: " + lr1.score(X_test, y_test));
