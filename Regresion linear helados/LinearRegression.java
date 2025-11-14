@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class LinearRegression {
-    private double[] weights;
+    private double[] pesos;
     private double bias;
     private boolean isFitted;
     private double[] featureMeans;
@@ -10,7 +10,7 @@ public class LinearRegression {
     private double targetStd;
     private boolean useScaling;
     
-    // Constructors
+    // Constructores
     public LinearRegression() {
         this(false);
     }
@@ -21,8 +21,8 @@ public class LinearRegression {
     }
     
     // Getters
-    public double[] getWeights() {
-        return weights != null ? Arrays.copyOf(weights, weights.length) : null;
+    public double[] getPesos() {
+        return pesos != null ? Arrays.copyOf(pesos, pesos.length) : null;
     }
     
     public double getBias() {
@@ -33,23 +33,18 @@ public class LinearRegression {
         return isFitted;
     }
     
-    /**
-     * Trains the linear regression model using gradient descent
-     */
-    public void fit(double[][] X, double[] y) {
-        fit(X, y, 1000, 0.01);
-    }
+    // Entrena el modelo y minimiza en el proceso
     
-    public void fit(double[][] X, double[] y, int iterations, double learningRate) {
+    public void fit(double[][] X, double[] y, int iteraciones, double ritmodeAprendizaje) {
         if (X.length != y.length) {
-            throw new IllegalArgumentException("X and y must have the same number of samples");
+            throw new IllegalArgumentException("La lista X y Y no tienen el mismo numero de variables");
         }
         
         int nSamples = X.length;
         int nFeatures = X[0].length;
         
-        // Initialize weights and bias
-        this.weights = new double[nFeatures];
+
+        this.pesos = new double[nFeatures];
         this.bias = 0;
         
         double[][] XScaled;
@@ -64,34 +59,30 @@ public class LinearRegression {
             yScaled = y;
         }
         
-        // Gradient descent
-        for (int iter = 0; iter < iterations; iter++) {
-            double[] predictions = predictInternal(XScaled);
+        for (int iter = 0; iter < iteraciones; iter++) {
+            double[] predicciones = predictInternal(XScaled);
             double[] errors = new double[nSamples];
             
-            // Calculate errors
+
             for (int i = 0; i < nSamples; i++) {
-                errors[i] = predictions[i] - yScaled[i];
+                errors[i] = predicciones[i] - yScaled[i];
             }
             
-            // Update weights
             for (int j = 0; j < nFeatures; j++) {
                 double gradient = 0;
                 for (int i = 0; i < nSamples; i++) {
                     gradient += errors[i] * XScaled[i][j];
                 }
-                weights[j] -= learningRate * (gradient / nSamples);
+                pesos[j] -= ritmodeAprendizaje * (gradient / nSamples);
             }
             
-            // Update bias
             double biasGradient = 0;
             for (int i = 0; i < nSamples; i++) {
                 biasGradient += errors[i];
             }
-            bias -= learningRate * (biasGradient / nSamples);
+            bias -= ritmodeAprendizaje * (biasGradient / nSamples);
         }
         
-        // If we scaled, adjust weights and bias back to original scale
         if (useScaling) {
             adjustWeightsForScaling();
         }
@@ -99,45 +90,44 @@ public class LinearRegression {
         this.isFitted = true;
     }
     
-    /**
-     * Predicts outputs for given input data
-     */
+
+     // Predice las salidas para cada dato de entrada
+    
     public double[] predict(double[][] X) {
         if (!isFitted) {
-            throw new IllegalStateException("Model must be fitted before prediction");
+            throw new IllegalStateException("Primero minimiza el modelo");input
         }
         
-        if (X[0].length != weights.length) {
-            throw new IllegalArgumentException("Input features must match trained model dimensions");
+        if (X[0].length != pesos.length) {
+            throw new IllegalArgumentException("Las dimensiones de entrada no estan correctas");
         }
         
         double[][] XScaled = useScaling ? scaleFeatures(X) : X;
-        double[] predictions = predictInternal(XScaled);
+        double[] predicciones = predictInternal(XScaled);
         
-        // If we scaled, convert predictions back to original scale
         if (useScaling) {
-            for (int i = 0; i < predictions.length; i++) {
-                predictions[i] = predictions[i] * targetStd + targetMean;
+            for (int i = 0; i < predicciones.length; i++) {
+                predicciones[i] = predicciones[i] * targetStd + targetMean;
             }
         }
         
-        return predictions;
+        return predicciones;
     }
     
     /**
      * Internal prediction method (assumes scaled data if scaling is used)
      */
     private double[] predictInternal(double[][] X) {
-        double[] predictions = new double[X.length];
+        double[] predicciones = new double[X.length];
         
         for (int i = 0; i < X.length; i++) {
-            predictions[i] = bias;
-            for (int j = 0; j < weights.length; j++) {
-                predictions[i] += weights[j] * X[i][j];
+            predicciones[i] = bias;
+            for (int j = 0; j < pesos.length; j++) {
+                predicciones[i] += pesos[j] * X[i][j];
             }
         }
         
-        return predictions;
+        return predicciones;
     }
     
     /**
@@ -145,36 +135,13 @@ public class LinearRegression {
      */
     public double score(double[][] X, double[] y) {
         if (!isFitted) {
-            throw new IllegalStateException("Model must be fitted before scoring");
+            throw new IllegalStateException("Primero minimiza el modelo");
         }
         
-        double[] predictions = predict(X);
-        return calculateRSquared(y, predictions);
+        double[] predicciones = predict(X);
+        return calculateRSquared(y, predicciones);
     }
     
-    /**
-     * Alternative scoring method - Mean Squared Error
-     */
-    public double scoreMSE(double[][] X, double[] y) {
-        if (!isFitted) {
-            throw new IllegalStateException("Model must be fitted before scoring");
-        }
-        
-        double[] predictions = predict(X);
-        return calculateMSE(y, predictions);
-    }
-    
-    /**
-     * Alternative scoring method - Mean Absolute Error
-     */
-    public double scoreMAE(double[][] X, double[] y) {
-        if (!isFitted) {
-            throw new IllegalStateException("Model must be fitted before scoring");
-        }
-        
-        double[] predictions = predict(X);
-        return calculateMAE(y, predictions);
-    }
     
     /**
      * Data scaling methods
@@ -249,19 +216,19 @@ public class LinearRegression {
     }
     
     /**
-     * Adjust weights and bias after training with scaled data
+     * Adjust pesos and bias after training with scaled data
      */
     private void adjustWeightsForScaling() {
         // Adjust bias
         double biasAdjustment = 0;
-        for (int j = 0; j < weights.length; j++) {
-            biasAdjustment += weights[j] * featureMeans[j] / featureStds[j];
+        for (int j = 0; j < pesos.length; j++) {
+            biasAdjustment += pesos[j] * featureMeans[j] / featureStds[j];
         }
         bias = bias * targetStd + targetMean - biasAdjustment * targetStd;
         
-        // Adjust weights
-        for (int j = 0; j < weights.length; j++) {
-            weights[j] = weights[j] * targetStd / featureStds[j];
+        // Adjust pesos
+        for (int j = 0; j < pesos.length; j++) {
+            pesos[j] = pesos[j] * targetStd / featureStds[j];
         }
     }
     
@@ -285,32 +252,17 @@ public class LinearRegression {
         
         return 1 - (ssResidual / ssTotal);
     }
-    
-    private double calculateMSE(double[] yTrue, double[] yPred) {
-        double sumSquaredErrors = 0;
-        for (int i = 0; i < yTrue.length; i++) {
-            sumSquaredErrors += Math.pow(yTrue[i] - yPred[i], 2);
-        }
-        return sumSquaredErrors / yTrue.length;
-    }
-    
-    private double calculateMAE(double[] yTrue, double[] yPred) {
-        double sumAbsoluteErrors = 0;
-        for (int i = 0; i < yTrue.length; i++) {
-            sumAbsoluteErrors += Math.abs(yTrue[i] - yPred[i]);
-        }
-        return sumAbsoluteErrors / yTrue.length;
-    }
-    
+
+
     @Override
     public String toString() {
         if (!isFitted) {
-            return "LinearRegression (not fitted)";
+            return "El modelo no esta minimizado";
         }
         
         StringBuilder sb = new StringBuilder();
-        sb.append("LinearRegression [weights=");
-        sb.append(Arrays.toString(weights));
+        sb.append("LinearRegression [pesos=");
+        sb.append(Arrays.toString(pesos));
         sb.append(", bias=");
         sb.append(bias);
         sb.append("]");
