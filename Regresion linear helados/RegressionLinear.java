@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class LinearRegression {
+public class RegressionLinear {
     private double[] pesos;
     private double bias;
     private boolean isFitted;
@@ -11,11 +11,11 @@ public class LinearRegression {
     private boolean useScaling;
     
     // Constructores
-    public LinearRegression() {
+    public RegressionLinear() {
         this(false);
     }
     
-    public LinearRegression(boolean useScaling) {
+    public RegressionLinear(boolean useScaling) {
         this.useScaling = useScaling;
         this.isFitted = false;
     }
@@ -259,7 +259,7 @@ public class LinearRegression {
         }
         
         StringBuilder sb = new StringBuilder();
-        sb.append("LinearRegression [pesos=");
+        sb.append("RegressionLinear [pesos=");
         sb.append(Arrays.toString(pesos));
         sb.append(", bias=");
         sb.append(bias);
