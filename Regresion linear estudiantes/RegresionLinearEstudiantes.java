@@ -1,5 +1,5 @@
 import java.util.Arrays;
-public class LinearRegressionTest {
+public class RegresionLinearEstudiantes {
     public static void main(String[] args) {
         double[][] X_train = {
     {8.8, 72.1, 45, 30.2},
@@ -182,36 +182,18 @@ public class LinearRegressionTest {
             2
         };
         
-        System.out.println("=== Linear Regression without Scaling ===");
-        LinearRegression lr1 = new LinearRegression(true);
+        System.out.println("Regression lineal minimizando la data");
+        RegressionLinear lr1 = new RegressionLinear(true);
         lr1.fit(X_train, y_train, 5000, 0.01);
         
-        System.out.println("Weights: " + Arrays.toString(lr1.getWeights()));
+        System.out.println("Pesos: " + Arrays.toString(lr1.getPesos()));
         System.out.println("Bias: " + lr1.getBias());
         
         double[] y_hat1 = lr1.predict(X_test);
         for (int i = 0; i < y_hat1.length; i++) {
-            System.out.printf("Predicted: %.2f, Actual: %.2f%n", y_hat1[i], y_test[i]);
+            System.out.printf("Predecido: " + y_hat1[i] + ", Actual: " + y_test[i]);
         }
         
-        System.out.printf("R² Score: %.4f%n", lr1.score(X_test, y_test));
-        System.out.printf("MSE: %.2f%n", lr1.scoreMSE(X_test, y_test));
-        System.out.printf("MAE: %.2f%n", lr1.scoreMAE(X_test, y_test));
-        
-        System.out.println("\n=== Linear Regression with Scaling ===");
-        LinearRegression lr2 = new LinearRegression(false);
-        lr2.fit(X_train, y_train, 5000, 0.01);
-        
-        System.out.println("Weights: " + Arrays.toString(lr2.getWeights()));
-        System.out.println("Bias: " + lr2.getBias());
-        
-        double[] y_hat2 = lr2.predict(X_test);
-        for (int i = 0; i < y_hat2.length; i++) {
-            System.out.printf("Predicted: %.2f, Actual: %.2f%n", y_hat2[i], y_test[i]);
-        }
-        
-        System.out.printf("R² Score: %.4f%n", lr2.score(X_test, y_test));
-        System.out.printf("MSE: %.2f%n", lr2.scoreMSE(X_test, y_test));
-        System.out.printf("MAE: %.2f%n", lr2.scoreMAE(X_test, y_test));
+        System.out.printf("Score: " + lr1.score(X_test, y_test));
     }
 }
