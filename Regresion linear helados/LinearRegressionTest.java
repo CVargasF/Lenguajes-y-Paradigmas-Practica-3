@@ -21,17 +21,15 @@ public class LinearRegressionTest {
         LinearRegression lr1 = new LinearRegression(true);
         lr1.fit(X_train, y_train, 5000, 0.01);
         
-        System.out.println("Weights: " + Arrays.toString(lr1.getWeights()));
+        System.out.println("Pesos: " + Arrays.toString(lr1.getPesos()));
         System.out.println("Bias: " + lr1.getBias());
         
         double[] y_hat1 = lr1.predict(X_test);
         for (int i = 0; i < y_hat1.length; i++) {
-            System.out.printf("Predicted: %.2f, Actual: %.2f%n", y_hat1[i], y_test[i]);
+            System.out.printf("Predicted: " + y_hat1[i] + ", Actual: " + y_test[i]);
         }
         
-        System.out.printf("R² Score: %.4f%n", lr1.score(X_test, y_test));
-        System.out.printf("MSE: %.2f%n", lr1.scoreMSE(X_test, y_test));
-        System.out.printf("MAE: %.2f%n", lr1.scoreMAE(X_test, y_test));
+        System.out.printf("Score: " + lr1.score(X_test, y_test));
         
 
     }
